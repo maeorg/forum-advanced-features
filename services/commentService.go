@@ -54,3 +54,12 @@ func GetCommentById(commentId int) models.Comment {
 	}
 	return formatComments(foundComment)[0]
 }
+
+func GetCommentsByUserId(userId int) []models.Comment {
+	foundComments, err := repository.GetCommentsByUserId(userId)
+	if err != nil {
+		fmt.Println("Error getting comments from database. " + err.Error())
+		return nil
+	}
+	return formatComments(foundComments)
+}

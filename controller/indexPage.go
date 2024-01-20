@@ -9,7 +9,7 @@ import (
 )
 
 type IndexPage struct {
-	PostAndLikes []PostAndLikes
+	PostAndLikes []models.PostAndLikes
 	Categories   []models.Category
 	User         models.User
 }
@@ -55,13 +55,13 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 			foundPosts = services.GetPostsBycategoryId(category)
 		}
 
-		var postsAndLikes []PostAndLikes
+		var postsAndLikes []models.PostAndLikes
 		for _, post := range foundPosts {
 			numberOfLikes := services.GetNumberOfLikesByPostId(post.Id, "like")
 			numberOfDislikes := services.GetNumberOfLikesByPostId(post.Id, "dislike")
 			categories := services.GetPostCategories(post)
 			author, _ := services.GetUserById(post.UserId)
-			postsAndLikes = append(postsAndLikes, PostAndLikes{
+			postsAndLikes = append(postsAndLikes, models.PostAndLikes{
 				Post:             post,
 				NumberOfLikes:    numberOfLikes,
 				NumberOfDislikes: numberOfDislikes,
@@ -81,12 +81,21 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func GetCurrentUser(w http.ResponseWriter, r *http.Request) models.User {
-	cookie, err := r.Cookie("session")
-	user := models.User{}
-	if err == nil {
-		foundUser, _ := services.GetUserByUsername(cookie.Value)
-		user = foundUser
+func GetAllPosts(w http.ResponseWriter, r *http.Request) []models.PostAndLikes {
+	foundPosts := services.GetAllPosts()
+	var postsAndLikes []models.PostAndLikes
+	for _, post := range foundPosts {
+		numberOfLikes := services.GetNumberOfLikesByPostId(post.Id, "like")
+		numberOfDislikes := services.GetNumberOfLikesByPostId(post.Id, "dislike")
+		categories := services.GetPostCategories(post)
+		author, _ := services.GetUserById(post.UserId)
+		postsAndLikes = append(postsAndLikes, models.PostAndLikes{
+			Post:             post,
+			NumberOfLikes:    numberOfLikes,
+			NumberOfDislikes: numberOfDislikes,
+			Categories:       categories,
+			Author:           author,
+		})
 	}
-	return user
+	return postsAndLikes
 }

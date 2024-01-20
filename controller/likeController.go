@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func Like(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +58,17 @@ func Dislike(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func AddNotification(notificationType string, postId, postCreatorUserId, userId int) {
+	notification := models.Notification {
+		Type: notificationType,
+		CreatedAt : time.Now().Format(time.RFC3339),
+		PostId: postId,
+		PostCreatorId: postCreatorUserId,
+		UserId: userId,
+	}
+	services.SaveNotification(notification)
+}
+
 func ProcessLike(oppositeLike models.Like, likeType string, userId, postId, commentId int, w http.ResponseWriter, r *http.Request) {
 
 	// make new like object
@@ -68,12 +80,16 @@ func ProcessLike(oppositeLike models.Like, likeType string, userId, postId, comm
 	}
 
 	var foundLike models.Like
+	postCreatorUserId := services.GetPostById(postId).UserId
 
 	// check if the same post/comment is already liked/disliked by the same user
 	foundOppositeLike := services.GetLike(oppositeLike.UserId, oppositeLike.PostId, oppositeLike.CommentId, oppositeLike.Type)
 	if foundOppositeLike.Id != 0 {
 		services.RemoveLike(foundOppositeLike)
 		services.SaveLike(like)
+		if commentId <= 0 {
+			AddNotification(likeType, postId, postCreatorUserId, userId)
+		}
 		fmt.Println("Post/comment is already liked/disliked by the same user. Reversing likes")
 		goto COMMENT
 	}
@@ -83,6 +99,9 @@ func ProcessLike(oppositeLike models.Like, likeType string, userId, postId, comm
 	if foundLike.Id == 0 {
 		// save like to database
 		services.SaveLike(like)
+		if commentId <= 0 {
+			AddNotification(likeType, postId, postCreatorUserId, userId)
+		}
 	} else {
 		services.RemoveLike(foundLike)
 	}

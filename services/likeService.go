@@ -34,6 +34,15 @@ func GetAllLikesByUserId(userId int) []models.Like {
 	return formatLikes(foundLikes)
 }
 
+func GetAllDislikesByUserId(userId int) []models.Like {
+	foundDislikes, err := repository.GetAllDislikesByUserId(userId)
+	if err != nil {
+		fmt.Println("Error getting dislikes from database. " + err.Error())
+		return nil
+	}
+	return formatLikes(foundDislikes)
+}
+
 func formatLikes(foundLikes *sql.Rows) []models.Like {
 	var id, userId, postId, commentId int
 	var likeType string

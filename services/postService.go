@@ -98,6 +98,31 @@ func GetAllLikedPostsByUserId(userId int) []models.Post  {
 	return likedPosts
 }
 
+func GetAllDislikedPostsByUserId(userId int) []models.Post  {
+	foundDislikes := GetAllDislikesByUserId(userId)
+
+	var dislikedPosts []models.Post
+	
+	for _, dislike := range foundDislikes {
+		if dislike.PostId == 0 {
+			continue
+		}
+		foundPost, err := repository.GetPostById(dislike.PostId)
+		if err != nil {
+			fmt.Println("Error getting disliked post from database. " + err.Error())
+			return nil
+		}
+		
+		dislikedPosts = append(dislikedPosts, formatPosts(foundPost)[0])
+	}
+
+	sort.Slice(dislikedPosts, func(i, j int) bool {
+		return dislikedPosts[i].CreatedAt > dislikedPosts[j].CreatedAt
+	})
+
+	return dislikedPosts
+}
+
 func GetPostsBycategoryId(categoryId int) []models.Post {
 	foundPostIds, err := repository.GetPostIdsByCategoryId(categoryId)
 	if err != nil {

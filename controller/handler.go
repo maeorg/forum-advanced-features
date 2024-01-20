@@ -21,4 +21,5 @@ func Handler() {
 	http.HandleFunc("/dislikeComment/", Dislike)
 	http.HandleFunc("/posts/", LoadPostAndCommentsByPostId)
 	http.HandleFunc("/filter", LoadIndex)
+	http.HandleFunc("/activity", LoadActivityPage)
 }

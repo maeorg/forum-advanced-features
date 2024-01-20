@@ -7,7 +7,7 @@ import (
 // database pointer
 var Database *sql.DB
 
-var tables = []string{users, posts, comments, likes, categories, categoryPost}
+var tables = []string{users, posts, comments, likes, categories, categoryPost, notifications}
 
 const users = `CREATE TABLE IF NOT EXISTS users (
 	id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
@@ -58,6 +58,18 @@ const categoryPost = `CREATE TABLE IF NOT EXISTS categoryPost (
 	category_id INTEGER NOT NULL,
 	FOREIGN KEY (post_id) REFERENCES posts(id),
 	FOREIGN KEY (category_id) REFERENCES categories(id)
+	);`
+
+const notifications = `CREATE TABLE IF NOT EXISTS notifications (
+	id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+	type TEXT NOT NULL,
+	created_at DATETIME NOT NULL,
+	post_id INTEGER NOT NULL,
+	post_creator_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL,
+	FOREIGN KEY (post_id) REFERENCES posts(id),
+	FOREIGN KEY (post_Creator_id) REFERENCES users(id),
+	FOREIGN KEY (user_id) REFERENCES users(id)
 	);`
 
 func InitializeDatabase() (*sql.DB, error) {

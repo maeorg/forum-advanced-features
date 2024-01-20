@@ -10,14 +10,6 @@ import (
 	"time"
 )
 
-type PostAndLikes struct {
-	Post             models.Post
-	NumberOfLikes    int
-	NumberOfDislikes int
-	Categories       []models.Category
-	Author           models.User
-}
-
 func AddPost(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		title := r.FormValue("title")
@@ -80,23 +72,4 @@ func AddPost(w http.ResponseWriter, r *http.Request) {
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
-}
-
-func GetAllPosts(w http.ResponseWriter, r *http.Request) []PostAndLikes {
-	foundPosts := services.GetAllPosts()
-	var postsAndLikes []PostAndLikes
-	for _, post := range foundPosts {
-		numberOfLikes := services.GetNumberOfLikesByPostId(post.Id, "like")
-		numberOfDislikes := services.GetNumberOfLikesByPostId(post.Id, "dislike")
-		categories := services.GetPostCategories(post)
-		author, _ := services.GetUserById(post.UserId)
-		postsAndLikes = append(postsAndLikes, PostAndLikes{
-			Post:             post,
-			NumberOfLikes:    numberOfLikes,
-			NumberOfDislikes: numberOfDislikes,
-			Categories:       categories,
-			Author:           author,
-		})
-	}
-	return postsAndLikes
 }

@@ -41,6 +41,14 @@ func GetAllLikesByUserId(userId int) (*sql.Rows, error) {
 	return foundLikes, nil
 }
 
+func GetAllDislikesByUserId(userId int) (*sql.Rows, error) {
+	foundDislikes, err := Database.Query(`SELECT * FROM likes WHERE user_id = ? AND type = "dislike"`, userId)
+	if err != nil {
+		return nil, err
+	}
+	return foundDislikes, nil
+}
+
 func GetAllLikesByCommentId(commentId int, likeType string) (*sql.Rows, error) {
 	foundLikes, err := Database.Query(`SELECT * FROM likes WHERE comment_id = ? AND type = ?`, commentId, likeType)
 	if err != nil {

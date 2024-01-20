@@ -29,3 +29,11 @@ func GetCommentById(commentId int) (*sql.Rows, error) {
 	}
 	return foundComment, nil
 }
+
+func GetCommentsByUserId(userId int) (*sql.Rows, error) {
+	foundComments, err := Database.Query("SELECT * FROM comments WHERE user_id = ? ORDER BY created_at DESC", userId)
+	if err != nil {
+		return nil, err
+	}
+	return foundComments, nil
+}
