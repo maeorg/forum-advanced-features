@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+
+<body class="backgroundImage">
+
+    <div class="title"><a href="/" style="color: white;">🔥 FIRESIDE FORUM 🔥</a></div>
+
+    <div style="margin-right: 30px; text-align: right;">
+        {{ if .User.Username }}
+        <div class="postContent courierFont">
+            Logged in as: {{ .User.Username }}
+        </div>
+        <a class="menuItem" href="/">HOME</a>
+        <a class="menuItem" href="/activity">ACTIVITY</a>
+        <a class="menuItem" href="/notifications">NOTIFICATIONS</a>
+        <a class="menuItem" href="/logout">LOG OUT</a>
+        {{ else }}
+        <a href="/login"
+            style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">LOG
+            IN</a>
+        <a href="/signup"
+            style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 30px;">SIGN
+            UP</a>
+        {{ end }}
+    </div>
+
+    {{ if .User.Username }}
+
+    {{ end }}
+
+</body>
+
+</html>

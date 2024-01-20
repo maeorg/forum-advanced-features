@@ -15,7 +15,10 @@
                 <div class="postContent courierFont">
                     Logged in as: {{ .User.Username }}
                 </div>
-                <a href="/logout" style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">LOG OUT</a>
+                <a class="menuItem" href="/">HOME</a>
+                <a class="menuItem" href="/activity">ACTIVITY</a>
+                <a class="menuItem" href="/notifications">NOTIFICATIONS</a>
+                <a class="menuItem" href="/logout">LOG OUT</a>
             {{ else }}
                 <a href="/login" style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">LOG IN</a>
                 <a href="/signup" style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 30px;">SIGN UP</a>

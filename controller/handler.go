@@ -22,4 +22,5 @@ func Handler() {
 	http.HandleFunc("/posts/", LoadPostAndCommentsByPostId)
 	http.HandleFunc("/filter", LoadIndex)
 	http.HandleFunc("/activity", LoadActivityPage)
+	http.HandleFunc("/notifications", LoadNotificationsPage)
 }
