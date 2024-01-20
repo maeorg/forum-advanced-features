@@ -1,10 +1,10 @@
-# 🔥 Forum image-upload 🔥
+# 🔥 Forum advanced-features 🔥
 
-##### 📖 _This repository contains the Forum image-upload project_
+##### 📖 _This repository contains the Forum advanced-features project_
 
 ## 📜 Auditing directions 
 
-- [Forum image-upload auditing directions](https://github.com/01-edu/public/tree/master/subjects/forum/image-upload/audit)
+- [Forum advanced-features auditing directions](https://github.com/01-edu/public/tree/master/subjects/forum/advanced-features/audit)
 
 For testing you can use these accounts and/or create your own:
 
@@ -65,12 +65,12 @@ Additionally, you can remove the Docker image to save disk space:
 
 2. Clone this repository to your local machine:
 ```bash
- git clone https://01.kood.tech/git/kmaeorg/forum.git
+ git clone https://01.kood.tech/git/kmaeorg/forum-advanced-features.git
 ```
 
 3. Navigate to the project directory:
 ```bash
- cd forum
+ cd forum-advanced-features
 ```
 
 4. Run the Go application: 
