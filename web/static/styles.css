@@ -111,6 +111,15 @@ a:link {
     font-size: 20px;
 }
 
+.activityTitle {
+    color: white; 
+    font-size: 18px; 
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-left: 30px;
+    text-decoration-line: underline;
+    text-underline-offset: 6px;
+}
+
 .likeButtons {
     text-align: right;
     margin-right: 50px;

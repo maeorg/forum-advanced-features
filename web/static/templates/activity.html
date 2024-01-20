@@ -22,7 +22,69 @@
             {{ end }}
         </div>
 
-        
+        <div class="activityTitle">
+            POSTS CREATED BY ME:
+        </div>
+        <div class="post-container">
+            {{ range .PostsCreatedByCurrentUser }}
+            <div class="post-block">
+                <div class="postText">
+                    <a href="/posts/{{ .Id }}" >
+                        <div class="postTitle">{{ .Title }}</div>
+                        <div class="postContent">{{ .Content }}</div>
+                        {{ if .ImageUrl }}
+                        <img class="postImage" src="{{.ImageUrl}}" alt="">
+                        {{ end }}
+                        <div class="postDate">{{ .CreatedAt }}</div>
+                    </a>  
+                </div>
+            </div>
+            {{ end }}
+        </div>
+
+        <div class="activityTitle">
+            POSTS LIKED BY ME:
+        </div>
+        <div class="post-container">
+            {{ range .PostsLikedByCurrentUser }}
+            <div class="post-block">
+                <div class="postText">
+                    <a href="/posts/{{ .Id }}" >
+                        <div class="postTitle">{{ .Title }}</div>
+                        <div class="postContent">{{ .Content }}</div>
+                        {{ if .ImageUrl }}
+                        <img class="postImage" src="{{.ImageUrl}}" alt="">
+                        {{ end }}
+                        <div class="postDate">{{ .CreatedAt }}</div>
+                    </a>  
+                </div>
+            </div>
+            {{ end }}
+        </div>
+
+        <div class="activityTitle">
+            POSTS DISLIKED BY ME:
+        </div>
+        <div class="post-container">
+            {{ range .PostsDislikedByCurrentUser }}
+            <div class="post-block">
+                <div class="postText">
+                    <a href="/posts/{{ .Id }}" >
+                        <div class="postTitle">{{ .Title }}</div>
+                        <div class="postContent">{{ .Content }}</div>
+                        {{ if .ImageUrl }}
+                        <img class="postImage" src="{{.ImageUrl}}" alt="">
+                        {{ end }}
+                        <div class="postDate">{{ .CreatedAt }}</div>
+                    </a>  
+                </div>
+            </div>
+            {{ end }}
+        </div>
+
+        <div class="activityTitle">
+            POSTS COMMENTED ON BY ME:
+        </div>
 
     </body>
 </html>
