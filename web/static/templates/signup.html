@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Forum</title>
+        <link rel="stylesheet" href="../static/styles.css">
+    </head>
+    <body class="backgroundImage">
+
+        <div class="title"><a href="/" style="color: white;">🔥 FIRESIDE FORUM 🔥</a></div>
+
+        <div class="post-block">
+            <div class="postContent" style="text-align: center;">
+                <form method="post" action="/signup">
+                    <div class="newPostTitle">Create account</div>
+
+                    <label class="signupLabels" for="username">Username</label>
+                    <input class="signupInputfield" type="text" name="username" placeholder="Username" pattern=".*\S+.*" autocomplete="off" maxlength="32" required><br><br>
+
+                    <label class="signupLabels" for="email">E-mail</label>
+                    <input class="signupInputfield" type="email" name="email" placeholder="Email" pattern=".*\S+.*" autocomplete="off" maxlength="64" required><br><br>
+
+                    <label class="signupLabels" for="password">Password</label>
+                    <input class="signupInputfield" type="password" name="password" placeholder="Password" pattern=".*\S+.*" autocomplete="off" minlength="8" maxlength="32" required onchange="if(this.checkValidity()) form.password_two.pattern = this.value;"><br><br>
+                    <label class="signupLabels" for="password">Confirm password</label>
+                    <input class="signupInputfield" id="password_two" name="password_two" type="password" pattern="^\S{8,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="Confirm password" required><br><br>
+
+                    <input class="button-3" type="submit" value="Create account">
+                </form>
+                <br><br>
+                Already have an account? Log in:<br><br>
+                <a class="button-3 button-4-color" href="/login">Log in</a>
+            </div>
+        </div>
+
+    </body>
+</html>

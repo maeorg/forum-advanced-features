@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Forum</title>
+        <link rel="stylesheet" href="../static/styles.css">
+    </head>
+    <body class="backgroundImage">
+
+        <div class="title"><a href="/" style="color: white;">🔥 FIRESIDE FORUM 🔥</a></div>
+
+        <div style="margin-right: 30px; text-align: right;">
+            {{ if .User.Username }}
+                <div class="postContent courierFont">
+                    Logged in as: {{ .User.Username }}
+                </div>
+                <a href="/logout" style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">LOG OUT</a>
+            {{ else }}
+                <a href="/login" style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">LOG IN</a>
+                <a href="/signup" style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 30px;">SIGN UP</a>
+            {{ end }}
+        </div>
+
+        <div class="post-block">
+            <form action="/filter" method="POST">
+                <div class="postContent" style="text-align: center;">Filter posts: 
+                    <select name="filter" id="filter">
+                        <option value="0">All</option>
+                        {{ range .Categories }}
+                            <option value="{{ .Id }}">{{ .Name }}</option> 
+                        {{ end }}
+                        {{ if .User.Username }}
+                            <option disabled>---</option>
+                            <option value="PostsCreatedByUser">Posts created by me</option>
+                            <option value="PostsLikedByUser">Posts liked by me</option>
+                        {{ end }}
+                    </select>
+                    <input type="submit" value="Filter">
+                </div>
+            </form>
+        </div>
+
+        {{ if .User.Username }}
+        <div class="post-block">
+            <form method="post" action="/createPost" enctype="multipart/form-data">
+                <div class="newPostTitle">ADD NEW POST </div>
+                <div class="newPostContent">
+                    Title:<br>
+                    <textarea type="text" name="title" placeholder="Title" pattern=".*\S+.*" maxlength="200" required rows="1" cols="100"></textarea><br><br>
+        
+                    Content:<br>
+                    <textarea type="text" name="content" placeholder="Content" pattern=".*\S+.*" maxlength="500" required rows="4" cols="100"></textarea><br><br>
+    
+                    Categories: <br>
+                    {{ range .Categories }}
+                        <input type="checkbox" id="category" name="category" value="{{ .Id }}">
+                        <label for="category">{{ .Name }} </label>
+                    {{ end }}<br><br>
+        
+                    Add image: <input class="submit" type="file" name="img" accept="image/png, image/jpg, image/gif, image/jpeg"/><br><br>
+                    <input class="button-3 button-4-color" type="submit" value="Add post">
+                </div>
+            </form>
+        </div>
+        {{ end }}
+
+        <div class="post-container">
+            {{ range .PostAndLikes }}
+            <div class="post-block">
+                <div class="postText">
+                    <a href="/posts/{{ .Post.Id }}" >
+                        <div class="postTitle">{{ .Post.Title }}</div>
+                        <div class="postContent">{{ .Post.Content }}</div>
+                        {{ if .Post.ImageUrl }}
+                        <img class="postImage" src="{{.Post.ImageUrl}}" alt="">
+                        {{ end }}
+                        <div class="postDate">{{ .Post.CreatedAt }}</div>
+                        <div class="postDate">Categories:<br>
+                            {{ range .Categories }} 
+                                - {{ .Name }}<br>
+                            {{ end }}
+                        </div>
+                        <div class="postDate">Author: {{ .Author.Username }}</div>
+                    </a>  
+                </div>
+
+                <div class="likeButtons">
+                    <form method="post" action="/likePost/{{ .Post.Id }}">
+                        <input type="image" src="../static/likeButtonIcon.png" alt="likeButton" class="likeButton" name="likeButton">
+                        <span class="numberOfLikes">{{ .NumberOfLikes }}</span>
+                    </form>
+                    <form method="post" action="/dislikePost/{{ .Post.Id }}">
+                        <input type="image" src="../static/dislikeButtonIcon.png" alt="dislikeButton" class="dislikeButton" name="dislikeButton">
+                        <span class="numberOfLikes">{{ .NumberOfDislikes }}</span>
+                    </form>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,56 @@
+package services
+
+import (
+	"database/sql"
+	"fmt"
+	"forum/models"
+	"forum/repository"
+)
+
+func SaveComment(comment models.Comment) {
+	err := repository.SaveComment(comment)
+	if err != nil {
+		fmt.Println("Error saving comment to database. " + err.Error())
+	} else {
+		fmt.Println("Saved comment to database")
+	}
+}
+
+func GetAllCommentsByPostId(postId int) []models.Comment {
+	foundComments, err := repository.GetAllCommentsByPostId(postId)
+	if err != nil {
+		fmt.Println("Error getting comments from database. " + err.Error())
+		return nil
+	}
+	return formatComments(foundComments)
+}
+
+func formatComments(foundComments *sql.Rows) []models.Comment {
+	var id, userId, postId int
+	var content, createdAt string
+
+	comments := []models.Comment{}
+
+	for foundComments.Next() {
+		foundComments.Scan(&id, &content, &createdAt, &userId, &postId)
+		comment := models.Comment{
+			Id:         id,
+			Content:      content,
+			CreatedAt:  createdAt,
+			UserId:     userId,
+			PostId: postId,
+		}
+		comments = append(comments, comment)
+	}
+
+	return comments
+}
+
+func GetCommentById(commentId int) models.Comment {
+	foundComment, err := repository.GetCommentById(commentId)
+	if err != nil {
+		fmt.Println("Error getting comment from database. " + err.Error())
+		return models.Comment{}
+	}
+	return formatComments(foundComment)[0]
+}
