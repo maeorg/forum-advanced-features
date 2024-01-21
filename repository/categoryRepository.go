@@ -49,3 +49,11 @@ func GetPostCategories(post models.Post) (*sql.Rows, error) {
 	}
 	return foundCategories, nil
 }
+
+func DeleteCategoryPostInfoByPostId(postId int) (sql.Result, error) {
+	result, err := Database.Exec(`DELETE FROM categoryPost WHERE post_id = ?`, postId)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}

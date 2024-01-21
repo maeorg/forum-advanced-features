@@ -37,3 +37,11 @@ func GetCommentsByUserId(userId int) (*sql.Rows, error) {
 	}
 	return foundComments, nil
 }
+
+func DeleteCommentsByPostId(postId int) (sql.Result, error) {
+	result, err := Database.Exec(`DELETE FROM comments WHERE post_id = ?`, postId)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}

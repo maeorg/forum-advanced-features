@@ -15,6 +15,14 @@ func SavePost(post models.Post) (*sql.Rows, error) {
 	return savedPost, nil
 }
 
+func DeletePostById(postId int) (sql.Result, error) {
+	result, err := Database.Exec(`DELETE FROM posts WHERE id = ?`, postId)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}
+
 func GetAllPosts() (*sql.Rows, error) {
 	foundPosts, err := Database.Query("SELECT * FROM posts ORDER BY created_at DESC")
 	if err != nil {

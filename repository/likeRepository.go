@@ -74,3 +74,11 @@ func GetNumberOfLikesByCommentId(commentId int, likeType string) *sql.Row {
 	foundLikes := Database.QueryRow(`SELECT COUNT(*) FROM likes WHERE comment_id = ? AND type = ?`, commentId, likeType)
 	return foundLikes
 }
+
+func DeleteLikesByPostId(postId int) (sql.Result, error) {
+	result, err := Database.Exec(`DELETE FROM likes WHERE post_id = ?`, postId)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}

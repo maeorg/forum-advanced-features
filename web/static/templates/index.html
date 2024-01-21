@@ -98,6 +98,10 @@
                         <span class="numberOfLikes">{{ .NumberOfDislikes }}</span>
                     </form>
                 </div>
+
+                <form method="post" action="/deletePost/{{ .Post.Id }}">
+                    <input class="button-3 button-4-color" type="submit" value="Delete post">
+                </form>
             </div>
             {{ end }}
         </div>

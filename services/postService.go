@@ -19,6 +19,47 @@ func SavePost(post models.Post) models.Post {
 	}
 }
 
+func DeletePostById(postId int) (error) {
+
+	// delete post
+	_, err := repository.DeletePostById(postId)
+	if err != nil {
+		fmt.Println("Error removing post from database. " + err.Error())
+		return err
+	} else {
+		fmt.Println("Removed from database post with id ", postId)
+	}
+
+	// delete comments of that post
+	_, err = repository.DeleteCommentsByPostId(postId)
+	if err != nil {
+		fmt.Println("Error removing comments from database. " + err.Error())
+		return err
+	} else {
+		fmt.Println("Removed comments from database for post ", postId)
+	}
+
+	// delete postCategory info for that post
+	_, err = repository.DeleteCategoryPostInfoByPostId(postId)
+	if err != nil {
+		fmt.Println("Error removing categoryPost info from database. " + err.Error())
+		return err
+	} else {
+		fmt.Println("Removed categoryPost info from database for post ", postId)
+	}
+
+	// delete the likes of that post
+	_, err = repository.DeleteLikesByPostId(postId)
+	if err != nil {
+		fmt.Println("Error removing likes from database. " + err.Error())
+		return err
+	} else {
+		fmt.Println("Removed likes from database for post ", postId)
+	}
+
+	return nil
+}
+
 func GetPostById(postId int) models.Post {
 	foundPost, err := repository.GetPostById(postId)
 	if err != nil {
@@ -56,16 +97,16 @@ func formatPosts(foundPosts *sql.Rows) []models.Post {
 	var title, content, createdAt, imageUrl string
 
 	posts := []models.Post{}
-	
+
 	for foundPosts.Next() {
 		foundPosts.Scan(&id, &title, &content, &createdAt, &imageUrl, &userId)
 		post := models.Post{
-			Id:         id,
-			Title:      title,
-			Content:    content,
-			CreatedAt:  createdAt,
-			ImageUrl: imageUrl,
-			UserId:     userId,
+			Id:        id,
+			Title:     title,
+			Content:   content,
+			CreatedAt: createdAt,
+			ImageUrl:  imageUrl,
+			UserId:    userId,
 		}
 		posts = append(posts, post)
 	}
@@ -73,11 +114,11 @@ func formatPosts(foundPosts *sql.Rows) []models.Post {
 	return posts
 }
 
-func GetAllLikedPostsByUserId(userId int) []models.Post  {
+func GetAllLikedPostsByUserId(userId int) []models.Post {
 	foundLikes := GetAllLikesByUserId(userId)
 
 	var likedPosts []models.Post
-	
+
 	for _, like := range foundLikes {
 		if like.PostId == 0 {
 			continue
@@ -87,7 +128,7 @@ func GetAllLikedPostsByUserId(userId int) []models.Post  {
 			fmt.Println("Error getting liked post from database. " + err.Error())
 			return nil
 		}
-		
+
 		likedPosts = append(likedPosts, formatPosts(foundPost)[0])
 	}
 
@@ -98,11 +139,11 @@ func GetAllLikedPostsByUserId(userId int) []models.Post  {
 	return likedPosts
 }
 
-func GetAllDislikedPostsByUserId(userId int) []models.Post  {
+func GetAllDislikedPostsByUserId(userId int) []models.Post {
 	foundDislikes := GetAllDislikesByUserId(userId)
 
 	var dislikedPosts []models.Post
-	
+
 	for _, dislike := range foundDislikes {
 		if dislike.PostId == 0 {
 			continue
@@ -112,7 +153,7 @@ func GetAllDislikedPostsByUserId(userId int) []models.Post  {
 			fmt.Println("Error getting disliked post from database. " + err.Error())
 			return nil
 		}
-		
+
 		dislikedPosts = append(dislikedPosts, formatPosts(foundPost)[0])
 	}
 
@@ -126,8 +167,8 @@ func GetAllDislikedPostsByUserId(userId int) []models.Post  {
 func GetPostsBycategoryId(categoryId int) []models.Post {
 	foundPostIds, err := repository.GetPostIdsByCategoryId(categoryId)
 	if err != nil {
-			fmt.Println("Error getting posts from database. " + err.Error())
-			return nil
+		fmt.Println("Error getting posts from database. " + err.Error())
+		return nil
 	}
 
 	posts := []models.Post{}
@@ -139,14 +180,14 @@ func GetPostsBycategoryId(categoryId int) []models.Post {
 			fmt.Println("Error getting post from database. " + err.Error())
 			return nil
 		}
-	
+
 		posts = append(posts, formatPosts(foundPost)[0])
 	}
 
 	sort.Slice(posts, func(i, j int) bool {
 		return posts[i].CreatedAt > posts[j].CreatedAt
 	})
-	
+
 	return posts
 }
 

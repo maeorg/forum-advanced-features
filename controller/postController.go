@@ -1,12 +1,14 @@
 package controller
 
 import (
+	"fmt"
 	"forum/models"
 	"forum/services"
 	"io"
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -22,8 +24,8 @@ func AddPost(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// set image maximum size 20 MB
-		maxImgSize := int64(20 * 1024 * 1024) 
-		var imageURL string 
+		maxImgSize := int64(20 * 1024 * 1024)
+		var imageURL string
 
 		file, handler, err := r.FormFile("img")
 		if err == nil {
@@ -70,6 +72,27 @@ func AddPost(w http.ResponseWriter, r *http.Request) {
 			services.SaveCategoryPost(categoryPost)
 		}
 
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+}
+
+func DeletePost(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		postId, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/deletePost/"))
+
+		// delete image of the post
+		foundPost := services.GetPostById(postId)
+		imageUrl := foundPost.ImageUrl
+		if imageUrl != "" {
+			err := os.Remove(strings.TrimPrefix(imageUrl, "."))
+			if err != nil {
+				fmt.Println("Error removing post image. " + err.Error())
+			} else {
+				fmt.Println("Removed image for post with id", postId)
+			}
+		}
+
+		services.DeletePostById(postId)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }

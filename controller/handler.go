@@ -23,4 +23,5 @@ func Handler() {
 	http.HandleFunc("/filter", LoadIndex)
 	http.HandleFunc("/activity", LoadActivityPage)
 	http.HandleFunc("/notifications", LoadNotificationsPage)
+	http.HandleFunc("/deletePost/", DeletePost)
 }
