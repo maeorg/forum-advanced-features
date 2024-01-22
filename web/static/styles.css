@@ -3,6 +3,11 @@
     background-size: 100%; 
 }
 
+@font-face {
+    font-family:'Franklin Gothic Medium';
+    src: url("./Franklin\ Gothic\ Medium\ Regular.ttf");
+}
+
 .menuItem {
     color: white; 
     font-size: 18px; 
