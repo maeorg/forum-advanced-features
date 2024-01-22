@@ -56,3 +56,13 @@ func formatNotifications(foundNotifications *sql.Rows) []models.Notification {
 
 	return notifications
 }
+
+func GetNumberOfNewNotificationsByUserId(userId int) int {
+	numberOfNotifications := repository.GetNumberOfNewNotificationsByUserId(userId)
+	var count int
+	if err := numberOfNotifications.Scan(&count); err != nil {
+		fmt.Println("Error getting number of new notifications from database. " + err.Error())
+		return -1
+	}
+	return count
+}

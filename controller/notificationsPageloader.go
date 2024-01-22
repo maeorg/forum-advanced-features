@@ -10,6 +10,7 @@ import (
 type NotificationsPage struct {
 	NotificationsWithUsername []NotificationWithUsername
 	User                      models.User
+	NumberOfNewNotifications int
 }
 
 type NotificationWithUsername struct {
@@ -37,9 +38,12 @@ func LoadNotificationsPage(w http.ResponseWriter, r *http.Request) {
 			notificationsWithUsername = append(notificationsWithUsername, notificationWithUsername)
 		}
 
+		numberOfNewNotifications := services.GetNumberOfNewNotificationsByUserId(user.Id)
+
 		notificationsPage := NotificationsPage{
 			NotificationsWithUsername: notificationsWithUsername,
 			User:                      user,
+			NumberOfNewNotifications: numberOfNewNotifications,
 		}
 
 		services.MarkAllNotificationsToRead()

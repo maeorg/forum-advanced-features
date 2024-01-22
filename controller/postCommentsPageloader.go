@@ -15,10 +15,11 @@ type CommentAndLikes struct {
 	Author models.User
 }
 
-type PostAndComments struct {
+type PostAndCommentsPage struct {
 	PostAndLikes models.PostAndLikes
 	CommentsAndLikes []CommentAndLikes
 	User         models.User
+	NumberOfNewNotifications int
 }
 
 func LoadPostAndCommentsByPostId(w http.ResponseWriter, r *http.Request) {
@@ -56,10 +57,12 @@ func LoadPostAndCommentsByPostId(w http.ResponseWriter, r *http.Request) {
 	
 	user := GetCurrentUser(w, r)
 
-	postAndComments := PostAndComments {
+	numberOfNewNotifications := services.GetNumberOfNewNotificationsByUserId(user.Id)
+	postAndComments := PostAndCommentsPage {
 		PostAndLikes: postAndLikes,
 		CommentsAndLikes: commentsAndLikes,
 		User: user,
+		NumberOfNewNotifications: numberOfNewNotifications,
 	}
 
 	template.Must(template.ParseFiles("web/static/templates/posts.html")).Execute(w, postAndComments)

@@ -12,6 +12,7 @@ type IndexPage struct {
 	PostAndLikes []models.PostAndLikes
 	Categories   []models.Category
 	User         models.User
+	NumberOfNewNotifications int
 }
 
 func LoadIndex(w http.ResponseWriter, r *http.Request) {
@@ -25,11 +26,13 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 		postsAndLikes := GetAllPosts(w, r)
 		categories := services.GetAllCategories()
 		user := GetCurrentUser(w, r)
+		numberOfNewNotifications := services.GetNumberOfNewNotificationsByUserId(user.Id)
 
 		indexPage := IndexPage{
 			PostAndLikes: postsAndLikes,
 			Categories:   categories,
 			User:         user,
+			NumberOfNewNotifications: numberOfNewNotifications,
 		}
 
 		template.Must(template.ParseFiles("web/static/templates/index.html")).Execute(w, indexPage)
@@ -71,11 +74,13 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 		}
 
 		categories := services.GetAllCategories()
+		numberOfNewNotifications := services.GetNumberOfNewNotificationsByUserId(user.Id)
 
 		indexPage := IndexPage{
 			PostAndLikes: postsAndLikes,
 			Categories:   categories,
 			User:         user,
+			NumberOfNewNotifications: numberOfNewNotifications,
 		}
 		template.Must(template.ParseFiles("web/static/templates/index.html")).Execute(w, indexPage)
 	}

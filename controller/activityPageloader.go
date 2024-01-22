@@ -13,6 +13,7 @@ type ActivityPage struct {
 	PostsDislikedByCurrentUser []models.Post
 	CommentsByCurrentUserAndPosts []CommentAndPost 
 	User models.User
+	NumberOfNewNotifications int
 }
 
 type CommentAndPost struct {
@@ -43,12 +44,14 @@ func LoadActivityPage(w http.ResponseWriter, r *http.Request) {
 			})
 		}
 		
+		numberOfNewNotifications := services.GetNumberOfNewNotificationsByUserId(user.Id)
 		activityPage := ActivityPage {
 			PostsCreatedByCurrentUser: posts,
 			PostsLikedByCurrentUser: likedPosts,
 			PostsDislikedByCurrentUser: dislikedPosts,
 			CommentsByCurrentUserAndPosts: commentsByCurrentUserAndPosts,
 			User: user,
+			NumberOfNewNotifications: numberOfNewNotifications,
 		}
 
 		template.Must(template.ParseFiles("web/static/templates/activity.html")).Execute(w, activityPage)

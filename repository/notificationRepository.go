@@ -23,3 +23,8 @@ func MarkAllNotificationsToRead() (sql.Result, error) {
 	result, err := Database.Exec("UPDATE notifications SET read  = ?", 1)
 	return result, err
 }
+
+func GetNumberOfNewNotificationsByUserId(userId int) *sql.Row {
+	numberOfNotifications := Database.QueryRow(`SELECT COUNT(*) FROM notifications WHERE post_creator_id = ? AND read = ?`, userId, 0)
+	return numberOfNotifications
+}

@@ -17,7 +17,7 @@
                 </div>
                 <a class="menuItem" href="/">HOME</a>
                 <a class="menuItem" href="/activity">ACTIVITY</a>
-                <a class="menuItem" href="/notifications">NOTIFICATIONS (0)</a>
+                <a class="menuItem" href="/notifications">NOTIFICATIONS ({{ .NumberOfNewNotifications }}) </a>
                 <a class="menuItem" href="/logout">LOG OUT</a>
             {{ else }}
                 <a href="/login" style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">LOG IN</a>
