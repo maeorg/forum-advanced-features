@@ -64,6 +64,14 @@ a:link {
     font-family: 'Courier New', Courier, monospace;
 }
 
+.post-block-newNotification {
+    margin: 20px;
+    border: 1px solid #000; 
+    padding: 10px 1px;
+    background-color: rgba(5, 89, 97, 0.726);
+    font-family: 'Courier New', Courier, monospace;
+}
+
 .postText {
     display: flex;
     flex-direction: column; 

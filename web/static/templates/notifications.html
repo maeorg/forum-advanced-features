@@ -34,17 +34,21 @@
     {{ if .User.Username }}
     <div class="post-container">
         {{ range .NotificationsWithUsername }}
-        <div class="post-block">
-            <div class="postText">
-                <a href="/posts/{{ .Notification.PostId }}">
-                    <div class="postContent">Your post got a {{ .Notification.Type }} from {{ .Username }}</div>
-                    <div class="postDate">{{ .Notification.CreatedAt }}</div>
-                </a>
+        {{ if eq .Notification.Type "dislike" }}
+        <div class="post-block-newNotification">
+            {{ else }}
+            <div class="post-block">
+                {{ end }}
+                <div class="postText">
+                    <a href="/posts/{{ .Notification.PostId }}">
+                        <div class="postContent">Your post got a {{ .Notification.Type }} from {{ .Username }}</div>
+                        <div class="postDate">{{ .Notification.CreatedAt }}</div>
+                    </a>
+                </div>
             </div>
+            {{ end }}
         </div>
         {{ end }}
-    </div>
-    {{ end }}
 
 </body>
 
