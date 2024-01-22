@@ -34,7 +34,7 @@
     {{ if .User.Username }}
     <div class="post-container">
         {{ range .NotificationsWithUsername }}
-        {{ if eq .Notification.Type "dislike" }}
+        {{ if eq .Notification.Read 0 }}
         <div class="post-block-newNotification">
             {{ else }}
             <div class="post-block">

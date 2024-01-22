@@ -9,12 +9,12 @@ import (
 
 type NotificationsPage struct {
 	NotificationsWithUsername []NotificationWithUsername
-	User models.User
+	User                      models.User
 }
 
 type NotificationWithUsername struct {
 	Notification models.Notification
-	Username string
+	Username     string
 }
 
 func LoadNotificationsPage(w http.ResponseWriter, r *http.Request) {
@@ -30,17 +30,19 @@ func LoadNotificationsPage(w http.ResponseWriter, r *http.Request) {
 		for _, notification := range notifications {
 			foundUser, _ := services.GetUserById(notification.UserId)
 			username := foundUser.Username
-			notificationWithUsername := NotificationWithUsername {
+			notificationWithUsername := NotificationWithUsername{
 				Notification: notification,
-				Username: username,
+				Username:     username,
 			}
 			notificationsWithUsername = append(notificationsWithUsername, notificationWithUsername)
 		}
 
-		notificationsPage := NotificationsPage {
+		notificationsPage := NotificationsPage{
 			NotificationsWithUsername: notificationsWithUsername,
-			User: user,
+			User:                      user,
 		}
+
+		services.MarkAllNotificationsToRead()
 
 		template.Must(template.ParseFiles("web/static/templates/notifications.html")).Execute(w, notificationsPage)
 	}

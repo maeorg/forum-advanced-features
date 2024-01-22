@@ -62,6 +62,7 @@ func AddNotification(notificationType string, postId, postCreatorUserId, userId 
 	notification := models.Notification {
 		Type: notificationType,
 		CreatedAt : time.Now().Format(time.RFC3339),
+		Read: 0,
 		PostId: postId,
 		PostCreatorId: postCreatorUserId,
 		UserId: userId,

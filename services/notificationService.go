@@ -25,18 +25,28 @@ func GetNotificationsByUserId(userId int) []models.Notification {
 	return formatNotifications(foundNotifications)
 }
 
+func MarkAllNotificationsToRead() {
+	_, err := repository.MarkAllNotificationsToRead()
+	if err != nil {
+		fmt.Println("Error marking notification to read. " + err.Error())
+	} else {
+		fmt.Println("Marked all notifications to read")
+	}
+}
+
 func formatNotifications(foundNotifications *sql.Rows) []models.Notification {
-	var id, postId, postCreatorId, userId int
+	var id, postId, postCreatorId, userId, read int
 	var notificationType, createdAt string
 
 	notifications := []models.Notification{}
 	
 	for foundNotifications.Next() {
-		foundNotifications.Scan(&id, &notificationType, &createdAt, &postId, &postCreatorId, &userId)
+		foundNotifications.Scan(&id, &notificationType, &createdAt, &read, &postId, &postCreatorId, &userId)
 		notification := models.Notification{
 			Id:         id,
 			Type:      notificationType,
 			CreatedAt: createdAt,
+			Read: read,
 			PostId: postId,
 			PostCreatorId: postCreatorId,
 			UserId: userId,

@@ -64,6 +64,7 @@ const notifications = `CREATE TABLE IF NOT EXISTS notifications (
 	id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
 	type TEXT NOT NULL,
 	created_at DATETIME NOT NULL,
+	read INTEGER NOT NULL,
 	post_id INTEGER NOT NULL,
 	post_creator_id INTEGER NOT NULL,
 	user_id INTEGER NOT NULL,
