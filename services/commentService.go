@@ -65,24 +65,12 @@ func GetCommentsByUserId(userId int) []models.Comment {
 }
 
 func DeleteCommentById(commentId int) error {
-
-	// // delete comment
-	// _, err := repository.DeleteCommentById(commentId)
-	// if err != nil {
-	// 	fmt.Println("Error removing comment from database. " + err.Error())
-	// 	return err
-	// } else {
-	// 	fmt.Println("Removed from database comment with id ", commentId)
-	// }
-
-	// // delete the likes of that comment
-	// _, err = repository.DeleteLikesByCommentId(commentId)
-	// if err != nil {
-	// 	fmt.Println("Error removing comment likes from database. " + err.Error())
-	// 	return err
-	// } else {
-	// 	fmt.Println("Removed likes from database for comment ", commentId)
-	// }
-
+	_, err := repository.DeleteCommentById(commentId)
+	if err != nil {
+		fmt.Println("Error removing comment from database. " + err.Error())
+		return err
+	} else {
+		fmt.Println("Removed from database comment with id ", commentId)
+	}
 	return nil
 }

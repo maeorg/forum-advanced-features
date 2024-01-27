@@ -24,4 +24,5 @@ func Handler() {
 	http.HandleFunc("/activity", LoadActivityPage)
 	http.HandleFunc("/notifications", LoadNotificationsPage)
 	http.HandleFunc("/deletePost/", DeletePost)
+	http.HandleFunc("/deleteComment/", DeleteComment)
 }

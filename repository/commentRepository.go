@@ -45,3 +45,11 @@ func DeleteCommentsByPostId(postId int) (sql.Result, error) {
 	}
 	return result, nil
 }
+
+func DeleteCommentById(commentId int) (sql.Result, error) {
+	result, err := Database.Exec(`DELETE FROM comments WHERE id = ?`, commentId)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}

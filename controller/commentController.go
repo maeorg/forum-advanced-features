@@ -37,3 +37,11 @@ func AddComment(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/posts/"+strconv.Itoa(comment.PostId), http.StatusSeeOther)
 	}
 }
+
+func DeleteComment(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		commentId, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/deleteComment/"))
+		services.DeleteCommentById(commentId)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+}
