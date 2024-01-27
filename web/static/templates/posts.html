@@ -25,8 +25,13 @@
         <a href="/login"
             style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">LOG
             IN</a>
+        <a href="/signup"
+            style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 30px;">SIGN
+            UP</a>
         {{ end }}
     </div>
+
+    {{ $username := .User.Username }}
 
     <div class="post-container">
         <div class="post-block">
@@ -39,21 +44,39 @@
                 <div class="postDate">{{ .PostAndLikes.Post.CreatedAt }}</div>
                 <div class="postDate">Author: {{ .PostAndLikes.Author.Username }}</div>
             </div>
+
             <div class="likeButtons">
-                <form method="post" action="/likePost/{{ .PostAndLikes.Post.Id }}">
-                    <input type="image" src="../static/likeButtonIcon.png" alt="likeButton" class="likeButton"
-                        name="likeButton">
-                    <span class="numberOfLikes">{{ .PostAndLikes.NumberOfLikes }}</span>
+                <div class="likeButtonsInner">
+                    <form method="post" action="/likePost/{{ .PostAndLikes.Post.Id }}">
+                        <input type="image" src="../static/likeButtonIcon.png" alt="likeButton" class="likeButton"
+                            name="likeButton">
+                        <span class="numberOfLikes">{{ .PostAndLikes.NumberOfLikes }}</span>
+                </div>
                 </form>
-                <form method="post" action="/dislikePost/{{ .PostAndLikes.Post.Id }}">
-                    <input type="image" src="../static/dislikeButtonIcon.png" alt="dislikeButton" class="dislikeButton"
-                        name="dislikeButton">
-                    <span class="numberOfLikes">{{ .PostAndLikes.NumberOfDislikes }}</span>
+                <div class="likeButtonsInner">
+                    <form method="post" action="/dislikePost/{{ .PostAndLikes.Post.Id }}">
+                        <input type="image" src="../static/dislikeButtonIcon.png" alt="dislikeButton"
+                            class="dislikeButton" name="dislikeButton">
+                        <span class="numberOfLikes">{{ .PostAndLikes.NumberOfDislikes }}</span>
+                </div>
                 </form>
             </div>
-            <form method="post" action="/deletePost/{{ .PostAndLikes.Post.Id }}">
-                <input class="button-3 button-4-color" type="submit" value="Delete post">
-            </form>
+
+            {{ if eq $username .PostAndLikes.Author.Username }}
+            <div id="outer">
+                <div class="inner">
+                    <form method="post" action="/editPost/{{ .PostAndLikes.Post.Id }}">
+                        <input class="button-3 button-5-color" type="submit" value="Edit post">
+                </div>
+                </form>
+                <div class="inner">
+                    <form method="post" action="/deletePost/{{ .PostAndLikes.Post.Id }}">
+                        <input class="button-3 button-5-color" type="submit" value="Delete post">
+                </div>
+                </form>
+            </div>
+            {{ end }}
+
         </div>
     </div>
 
@@ -94,9 +117,22 @@
                     <span class="numberOfLikes">{{ .NumberOfDislikes }}</span>
                 </form>
             </div>
-            <form method="post" action="/deleteComment/{{ .Comment.Id }}">
-                <input class="button-3 button-4-color" type="submit" value="Delete comment">
-            </form>
+
+            {{ if eq $username .Author.Username }}
+            <div id="outer">
+                <div class="inner">
+                    <form method="post" action="/editComment/{{ .Comment.Id }}">
+                        <input class="button-3 button-5-color" type="submit" value="Edit comment">
+                    </form>
+                </div>
+                <div class="inner">
+                    <form method="post" action="/deleteComment/{{ .Comment.Id }}">
+                        <input class="button-3 button-5-color" type="submit" value="Delete comment">
+                    </form>
+                </div>
+            </div>
+            {{ end }}
+
         </div>
         {{ end }}
     </div>

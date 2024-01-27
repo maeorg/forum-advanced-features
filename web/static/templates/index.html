@@ -69,13 +69,14 @@
                 <label for="category">{{ .Name }} </label>
                 {{ end }}<br><br>
 
-                Add image: <input class="submit" type="file" name="img"
-                    accept="image/*" /><br><br>
+                Add image: <input class="submit" type="file" name="img" accept="image/*" /><br><br>
                 <input class="button-3 button-4-color" type="submit" value="Add post">
             </div>
         </form>
     </div>
     {{ end }}
+
+    {{ $username := .User.Username }}
 
     <div class="post-container">
         {{ range .PostAndLikes }}
@@ -98,24 +99,43 @@
             </div>
 
             <div class="likeButtons">
-                <form method="post" action="/likePost/{{ .Post.Id }}">
-                    <input type="image" src="../static/likeButtonIcon.png" alt="likeButton" class="likeButton"
-                        name="likeButton">
-                    <span class="numberOfLikes">{{ .NumberOfLikes }}</span>
+                <div class="likeButtonsInner">
+                    <form method="post" action="/likePost/{{ .Post.Id }}">
+                        <input type="image" src="../static/likeButtonIcon.png" alt="likeButton" class="likeButton"
+                            name="likeButton">
+                        <span class="numberOfLikes">{{ .NumberOfLikes }}</span>
+                </div>
                 </form>
-                <form method="post" action="/dislikePost/{{ .Post.Id }}">
-                    <input type="image" src="../static/dislikeButtonIcon.png" alt="dislikeButton" class="dislikeButton"
-                        name="dislikeButton">
-                    <span class="numberOfLikes">{{ .NumberOfDislikes }}</span>
+                <div class="likeButtonsInner">
+                    <form method="post" action="/dislikePost/{{ .Post.Id }}">
+                        <input type="image" src="../static/dislikeButtonIcon.png" alt="dislikeButton"
+                            class="dislikeButton" name="dislikeButton">
+                        <span class="numberOfLikes">{{ .NumberOfDislikes }}</span>
+                </div>
                 </form>
             </div>
 
-            <form method="post" action="/deletePost/{{ .Post.Id }}">
-                <input class="button-3 button-4-color" type="submit" value="Delete post">
-            </form>
+            {{ if eq $username .Author.Username }}
+            <div id="outer">
+                <div class="inner">
+                    <form method="post" action="/editPost/{{ .Post.Id }}">
+                        <input class="button-3 button-5-color" type="submit" value="Edit post">
+                    </form>
+                </div>
+                <div class="inner">
+                    <form method="post" action="/deletePost/{{ .Post.Id }}">
+                        <input class="button-3 button-5-color" type="submit" value="Delete post">
+                    </form>
+                </div>
+            </div>
+            {{ end }}
+
         </div>
         {{ end }}
+
     </div>
+
+
 
 </body>
 

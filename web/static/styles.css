@@ -213,11 +213,34 @@ a:link {
   outline: none;
 }
 
-/* CSS */
 .button-4-color {
     background-color: rgb(17, 131, 141);
 }
 
 .button-4-color:hover {
     background-color: rgb(15, 120, 129);
-  }
+}
+
+.button-5-color {
+    background-color: rgb(14, 101, 109);
+}
+
+.button-5-color:hover {
+    background-color: rgb(9, 72, 77);
+}
+
+.inner
+{
+    display: inline-block;
+    margin-left: 20px;
+}
+
+#outer
+{
+    width:100%;
+    text-align: left;
+}
+
+.likeButtonsInner {
+    display: inline-block;
+}
