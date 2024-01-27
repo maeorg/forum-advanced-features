@@ -6,9 +6,17 @@ import (
 	"forum/services"
 	"html/template"
 	"net/http"
+
+	"github.com/gofrs/uuid/v5"
+	_ "github.com/gofrs/uuid/v5"
 )
 
-var LoggedInUsers []string
+var LoggedInUsers []UserSessionInfo
+
+type UserSessionInfo struct {
+	User              models.User
+	SessionIdentifier string
+}
 
 func Login(w http.ResponseWriter, r *http.Request) {
 
@@ -22,37 +30,44 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		username := r.FormValue("username")
 		password := r.FormValue("password")
 
-		// check if user already logged in
-		for _, user := range LoggedInUsers {
-			if user == username {
-				fmt.Println("User already logged in")
-				http.Redirect(w, r, "/login", http.StatusFound)
-				return
-			}
-		}
-
 		// check if username exists and password matches
 		foundUser, err := services.GetUserByUsername(username)
 		correctPassword := services.CheckIfCorrectPassword(foundUser, password)
 		if err != nil || !correctPassword {
 			fmt.Println("Wrong username or password")
-			http.Redirect(w, r, "/login", http.StatusFound)
+			http.Error(w, "Wrong username or password", http.StatusBadRequest)
 			return
 		} else {
+			// check if user already logged in
+			for i, userSessionInfo := range LoggedInUsers {
+				if userSessionInfo.User.Username == username {
+					fmt.Println("User already logged in. Logging out from other places and logging in from here.")
+					LoggedInUsers = append(LoggedInUsers[:i], LoggedInUsers[i+1:]...)
+				}
+			}
 			SetCookieAndLogIn(w, foundUser, r)
 		}
 	}
 }
 
 func SetCookieAndLogIn(w http.ResponseWriter, foundUser models.User, r *http.Request) {
+	generatedUuid, _ := uuid.NewV4()
+	sessionIdentifier := generatedUuid.String()
+
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session",
-		Value:    foundUser.Username,
+		Value:    sessionIdentifier,
 		Path:     "/",
 		MaxAge:   60 * 60,
 		HttpOnly: true,
 	})
-	LoggedInUsers = append(LoggedInUsers, foundUser.Username)
+
+	userSessionInfo := UserSessionInfo{
+		User:              foundUser,
+		SessionIdentifier: sessionIdentifier,
+	}
+
+	LoggedInUsers = append(LoggedInUsers, userSessionInfo)
 	fmt.Println("Logged in succesfully. Welcome", foundUser.Username)
 	http.Redirect(w, r, "/", http.StatusFound)
 }
@@ -68,13 +83,13 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		})
 		cookie, err := r.Cookie("session")
 		if err == nil {
-			username := cookie.Value
-			for i, user := range LoggedInUsers {
-				if user == username {
+			sessionIdentifier := cookie.Value
+			for i, userSessionInfo := range LoggedInUsers {
+				if userSessionInfo.SessionIdentifier == sessionIdentifier {
 					LoggedInUsers = append(LoggedInUsers[:i], LoggedInUsers[i+1:]...)
 				}
 			}
-			fmt.Println("Logged out user", username)
+			fmt.Println("Logged out user with uuid", sessionIdentifier)
 		}
 		http.Redirect(w, r, "/", http.StatusFound)
 	}

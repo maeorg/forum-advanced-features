@@ -78,7 +78,7 @@ func InitializeDatabase() (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if err := database.Ping(); err != nil {
 		return nil, err
 	}

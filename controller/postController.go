@@ -31,6 +31,13 @@ func AddPost(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			defer file.Close()
 
+			filenameSplit := strings.Split(handler.Filename, ".")
+			fileExtension := strings.ToLower(filenameSplit[len(filenameSplit)-1])
+			if !(fileExtension == "jpg" || fileExtension == "jpeg" || fileExtension == "gif" || fileExtension == "png" || fileExtension == "svg") {
+				http.Error(w, "File format not allowed", http.StatusBadRequest)
+				return
+			}
+
 			if handler.Size > maxImgSize {
 				http.Error(w, "File size exceeds 20 MB limit", http.StatusBadRequest)
 				return

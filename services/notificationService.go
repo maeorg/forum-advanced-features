@@ -39,17 +39,17 @@ func formatNotifications(foundNotifications *sql.Rows) []models.Notification {
 	var notificationType, createdAt string
 
 	notifications := []models.Notification{}
-	
+
 	for foundNotifications.Next() {
 		foundNotifications.Scan(&id, &notificationType, &createdAt, &read, &postId, &postCreatorId, &userId)
 		notification := models.Notification{
-			Id:         id,
-			Type:      notificationType,
-			CreatedAt: createdAt,
-			Read: read,
-			PostId: postId,
+			Id:            id,
+			Type:          notificationType,
+			CreatedAt:     createdAt,
+			Read:          read,
+			PostId:        postId,
 			PostCreatorId: postCreatorId,
-			UserId: userId,
+			UserId:        userId,
 		}
 		notifications = append(notifications, notification)
 	}

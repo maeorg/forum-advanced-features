@@ -9,29 +9,29 @@ import (
 )
 
 type IndexPage struct {
-	PostAndLikes []models.PostAndLikes
-	Categories   []models.Category
-	User         models.User
+	PostAndLikes             []models.PostAndLikes
+	Categories               []models.Category
+	User                     models.User
 	NumberOfNewNotifications int
 }
 
 func LoadIndex(w http.ResponseWriter, r *http.Request) {
-	
+
 	if r.Method == "GET" {
 		if r.URL.Path != "/" {
 			template.Must(template.ParseFiles("web/static/templates/404.html")).Execute(w, nil)
 			return
 		}
-		
+
 		postsAndLikes := GetAllPosts(w, r)
 		categories := services.GetAllCategories()
 		user := GetCurrentUser(w, r)
 		numberOfNewNotifications := services.GetNumberOfNewNotificationsByUserId(user.Id)
 
 		indexPage := IndexPage{
-			PostAndLikes: postsAndLikes,
-			Categories:   categories,
-			User:         user,
+			PostAndLikes:             postsAndLikes,
+			Categories:               categories,
+			User:                     user,
 			NumberOfNewNotifications: numberOfNewNotifications,
 		}
 
@@ -69,7 +69,7 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 				NumberOfLikes:    numberOfLikes,
 				NumberOfDislikes: numberOfDislikes,
 				Categories:       categories,
-				Author: author,
+				Author:           author,
 			})
 		}
 
@@ -77,9 +77,9 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 		numberOfNewNotifications := services.GetNumberOfNewNotificationsByUserId(user.Id)
 
 		indexPage := IndexPage{
-			PostAndLikes: postsAndLikes,
-			Categories:   categories,
-			User:         user,
+			PostAndLikes:             postsAndLikes,
+			Categories:               categories,
+			User:                     user,
 			NumberOfNewNotifications: numberOfNewNotifications,
 		}
 		template.Must(template.ParseFiles("web/static/templates/index.html")).Execute(w, indexPage)

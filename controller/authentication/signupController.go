@@ -43,15 +43,15 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// make new user object
-		user := models.User {
+		user := models.User{
 			Username: username,
-			Email: email,
+			Email:    email,
 			Password: password,
 		}
 
 		// save user to database
 		services.SaveUser(user)
-		
+
 		fmt.Println("Succesfully created user")
 		SetCookieAndLogIn(w, user, r)
 	}

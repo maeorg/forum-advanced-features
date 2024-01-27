@@ -33,12 +33,12 @@ func GetAllCategories() []models.Category {
 
 	var id int
 	var name string
-	categories := []models.Category {}
+	categories := []models.Category{}
 
 	for foundCategories.Next() {
 		foundCategories.Scan(&id, &name)
-		category := models.Category {
-			Id: id,
+		category := models.Category{
+			Id:   id,
 			Name: name,
 		}
 		categories = append(categories, category)
@@ -52,8 +52,8 @@ func GetCategoryById(id int) models.Category {
 
 	var name string
 	foundCategory.Scan(&id, &name)
-	category := models.Category {
-		Id: id,
+	category := models.Category{
+		Id:   id,
 		Name: name,
 	}
 	return category

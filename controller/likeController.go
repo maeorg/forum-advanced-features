@@ -59,13 +59,13 @@ func Dislike(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddNotification(notificationType string, postId, postCreatorUserId, userId int) {
-	notification := models.Notification {
-		Type: notificationType,
-		CreatedAt : time.Now().Format(time.RFC3339),
-		Read: 0,
-		PostId: postId,
+	notification := models.Notification{
+		Type:          notificationType,
+		CreatedAt:     time.Now().Format(time.RFC3339),
+		Read:          0,
+		PostId:        postId,
 		PostCreatorId: postCreatorUserId,
-		UserId: userId,
+		UserId:        userId,
 	}
 	services.SaveNotification(notification)
 }
@@ -107,7 +107,7 @@ func ProcessLike(oppositeLike models.Like, likeType string, userId, postId, comm
 		services.RemoveLike(foundLike)
 	}
 
-	COMMENT:
+COMMENT:
 	if commentId != 0 {
 		foundComment := services.GetCommentById(commentId)
 		http.Redirect(w, r, "/posts/"+strconv.Itoa(foundComment.PostId), http.StatusSeeOther)

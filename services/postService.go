@@ -19,7 +19,7 @@ func SavePost(post models.Post) models.Post {
 	}
 }
 
-func DeletePostById(postId int) (error) {
+func DeletePostById(postId int) error {
 
 	// delete post
 	_, err := repository.DeletePostById(postId)

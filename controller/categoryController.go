@@ -18,7 +18,7 @@ func AddCategory(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// make new category object
-		category := models.Category {
+		category := models.Category{
 			Name: name,
 		}
 

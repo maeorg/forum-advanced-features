@@ -9,16 +9,16 @@ import (
 )
 
 type CommentAndLikes struct {
-	Comment models.Comment
-	NumberOfLikes int
+	Comment          models.Comment
+	NumberOfLikes    int
 	NumberOfDislikes int
-	Author models.User
+	Author           models.User
 }
 
 type PostAndCommentsPage struct {
-	PostAndLikes models.PostAndLikes
-	CommentsAndLikes []CommentAndLikes
-	User         models.User
+	PostAndLikes             models.PostAndLikes
+	CommentsAndLikes         []CommentAndLikes
+	User                     models.User
 	NumberOfNewNotifications int
 }
 
@@ -33,10 +33,10 @@ func LoadPostAndCommentsByPostId(w http.ResponseWriter, r *http.Request) {
 		numberOfDislikes := services.GetNumberOfLikesByCommentId(comment.Id, "dislike")
 		author, _ := services.GetUserById(comment.UserId)
 		commentsAndLikes = append(commentsAndLikes, CommentAndLikes{
-			Comment: comment, 
-			NumberOfLikes: numberOfLikes, 
+			Comment:          comment,
+			NumberOfLikes:    numberOfLikes,
 			NumberOfDislikes: numberOfDislikes,
-			Author: author,
+			Author:           author,
 		})
 	}
 
@@ -48,20 +48,20 @@ func LoadPostAndCommentsByPostId(w http.ResponseWriter, r *http.Request) {
 	numberOfLikes := services.GetNumberOfLikesByPostId(postId, "like")
 	numberOfDislikes := services.GetNumberOfLikesByPostId(postId, "dislike")
 	author, _ := services.GetUserById(foundPost.UserId)
-	postAndLikes := models.PostAndLikes {
-		Post: foundPost,
-		NumberOfLikes: numberOfLikes,
+	postAndLikes := models.PostAndLikes{
+		Post:             foundPost,
+		NumberOfLikes:    numberOfLikes,
 		NumberOfDislikes: numberOfDislikes,
-		Author: author,
+		Author:           author,
 	}
-	
+
 	user := GetCurrentUser(w, r)
 
 	numberOfNewNotifications := services.GetNumberOfNewNotificationsByUserId(user.Id)
-	postAndComments := PostAndCommentsPage {
-		PostAndLikes: postAndLikes,
-		CommentsAndLikes: commentsAndLikes,
-		User: user,
+	postAndComments := PostAndCommentsPage{
+		PostAndLikes:             postAndLikes,
+		CommentsAndLikes:         commentsAndLikes,
+		User:                     user,
 		NumberOfNewNotifications: numberOfNewNotifications,
 	}
 

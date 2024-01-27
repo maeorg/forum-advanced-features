@@ -34,11 +34,11 @@ func formatComments(foundComments *sql.Rows) []models.Comment {
 	for foundComments.Next() {
 		foundComments.Scan(&id, &content, &createdAt, &userId, &postId)
 		comment := models.Comment{
-			Id:         id,
-			Content:      content,
-			CreatedAt:  createdAt,
-			UserId:     userId,
-			PostId: postId,
+			Id:        id,
+			Content:   content,
+			CreatedAt: createdAt,
+			UserId:    userId,
+			PostId:    postId,
 		}
 		comments = append(comments, comment)
 	}
@@ -62,4 +62,27 @@ func GetCommentsByUserId(userId int) []models.Comment {
 		return nil
 	}
 	return formatComments(foundComments)
+}
+
+func DeleteCommentById(commentId int) error {
+
+	// // delete comment
+	// _, err := repository.DeleteCommentById(commentId)
+	// if err != nil {
+	// 	fmt.Println("Error removing comment from database. " + err.Error())
+	// 	return err
+	// } else {
+	// 	fmt.Println("Removed from database comment with id ", commentId)
+	// }
+
+	// // delete the likes of that comment
+	// _, err = repository.DeleteLikesByCommentId(commentId)
+	// if err != nil {
+	// 	fmt.Println("Error removing comment likes from database. " + err.Error())
+	// 	return err
+	// } else {
+	// 	fmt.Println("Removed likes from database for comment ", commentId)
+	// }
+
+	return nil
 }

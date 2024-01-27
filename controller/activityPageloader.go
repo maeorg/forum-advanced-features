@@ -8,17 +8,17 @@ import (
 )
 
 type ActivityPage struct {
-	PostsCreatedByCurrentUser []models.Post
-	PostsLikedByCurrentUser []models.Post
-	PostsDislikedByCurrentUser []models.Post
-	CommentsByCurrentUserAndPosts []CommentAndPost 
-	User models.User
-	NumberOfNewNotifications int
+	PostsCreatedByCurrentUser     []models.Post
+	PostsLikedByCurrentUser       []models.Post
+	PostsDislikedByCurrentUser    []models.Post
+	CommentsByCurrentUserAndPosts []CommentAndPost
+	User                          models.User
+	NumberOfNewNotifications      int
 }
 
 type CommentAndPost struct {
 	Comment models.Comment
-	Post models.Post
+	Post    models.Post
 }
 
 func LoadActivityPage(w http.ResponseWriter, r *http.Request) {
@@ -32,26 +32,26 @@ func LoadActivityPage(w http.ResponseWriter, r *http.Request) {
 		posts := services.GetPostsByUserId(user.Id)
 		likedPosts := services.GetAllLikedPostsByUserId(user.Id)
 		dislikedPosts := services.GetAllDislikedPostsByUserId(user.Id)
-		
+
 		commentsByCurrentUser := services.GetCommentsByUserId(user.Id)
 		var commentsByCurrentUserAndPosts []CommentAndPost
 		for _, comment := range commentsByCurrentUser {
 			post := services.GetPostById(comment.PostId)
-			commentsByCurrentUserAndPosts = append(commentsByCurrentUserAndPosts, 
+			commentsByCurrentUserAndPosts = append(commentsByCurrentUserAndPosts,
 				CommentAndPost{
 					Comment: comment,
-					Post: post,
-			})
+					Post:    post,
+				})
 		}
-		
+
 		numberOfNewNotifications := services.GetNumberOfNewNotificationsByUserId(user.Id)
-		activityPage := ActivityPage {
-			PostsCreatedByCurrentUser: posts,
-			PostsLikedByCurrentUser: likedPosts,
-			PostsDislikedByCurrentUser: dislikedPosts,
+		activityPage := ActivityPage{
+			PostsCreatedByCurrentUser:     posts,
+			PostsLikedByCurrentUser:       likedPosts,
+			PostsDislikedByCurrentUser:    dislikedPosts,
 			CommentsByCurrentUserAndPosts: commentsByCurrentUserAndPosts,
-			User: user,
-			NumberOfNewNotifications: numberOfNewNotifications,
+			User:                          user,
+			NumberOfNewNotifications:      numberOfNewNotifications,
 		}
 
 		template.Must(template.ParseFiles("web/static/templates/activity.html")).Execute(w, activityPage)
