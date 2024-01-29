@@ -15,6 +15,16 @@ func SavePost(post models.Post) (*sql.Rows, error) {
 	return savedPost, nil
 }
 
+func UpdatePost(post models.Post) (*sql.Rows, error) {
+	query := `UPDATE posts SET title = ?, content = ?, image_url = ? WHERE id = ?`
+	_, err := Database.Exec(query, post.Title, post.Content, post.ImageUrl, post.Id)
+	if err != nil {
+		return nil, err
+	}
+	savedUpdatedPost, _ := Database.Query("SELECT * FROM posts WHERE id = ?", post.Id)
+	return savedUpdatedPost, nil
+}
+
 func DeletePostById(postId int) (sql.Result, error) {
 	result, err := Database.Exec(`DELETE FROM posts WHERE id = ?`, postId)
 	if err != nil {

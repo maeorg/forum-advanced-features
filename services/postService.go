@@ -19,6 +19,17 @@ func SavePost(post models.Post) models.Post {
 	}
 }
 
+func UpdatePost(post models.Post) models.Post {
+	savedUpdatedPost, err := repository.UpdatePost(post)
+	if err != nil {
+		fmt.Println("Error saving post to database. " + err.Error())
+		return models.Post{}
+	} else {
+		fmt.Println("Saved post to database")
+		return formatPosts(savedUpdatedPost)[0]
+	}
+}
+
 func DeletePostById(postId int) error {
 
 	// delete post

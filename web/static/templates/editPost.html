@@ -33,7 +33,7 @@
 
     {{ if eq .Post.UserId .User.Id }}
     <div class="post-block">
-        <form method="post" action="/createPost" enctype="multipart/form-data">
+        <form method="post" action="/editPost/{{ .Post.Id }}" enctype="multipart/form-data">
             <div class="newPostTitle">EDIT POST </div>
             <div class="newPostContent">
                 Title:<br>
@@ -69,14 +69,10 @@
 
                 <div id="outer">
                     <div class="inner">
-                        <form method="get" action="/editPost/{{ .Post.Id }}">
-                            <input class="button-3 button-4-color" type="submit" value="Save post">
-                        </form>
+                        <input class="button-3 button-4-color" type="submit" value="Save post">
                     </div>
                     <div class="inner">
-                        <form method="post" action="/">
-                            <input class="button-3 button-4-color" type="submit" value="Discard changes">
-                        </form>
+                        <a href="/" class="button-3 button-4-color">Discard changes</a>
                     </div>
                 </div>
 
@@ -85,7 +81,7 @@
     </div>
     {{ else }}
     <div class="postContent courierFont">
-        Warning. This is not your post. You are not allowed to edit it.
+        Warning. This is not your post or you are not logged in. You are not allowed to edit it.
     </div>
     {{ end }}
 
