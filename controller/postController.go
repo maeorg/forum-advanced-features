@@ -103,3 +103,11 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }
+
+// func EditPost(w http.ResponseWriter, r *http.Request) {
+// 	// if r.Method == "POST" {
+// 		postId, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/editPost/"))
+// 		foundPost := services.GetPostById(postId)
+// 		template.Must(template.ParseFiles("web/static/templates/editPost.html")).Execute(w, foundPost)
+// 	// }
+// }
