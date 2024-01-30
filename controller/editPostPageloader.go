@@ -77,20 +77,20 @@ func LoadEditPostPage(w http.ResponseWriter, r *http.Request) {
 			}
 			defer f.Close()
 			io.Copy(f, file)
-			
+
 			err = os.Remove(strings.TrimPrefix(imageUrl, "."))
 			if err != nil {
 				fmt.Println("Error removing post image. " + err.Error())
-				} else {
-					fmt.Println("Removed image for post with id", postId)
-				}
+			} else {
+				fmt.Println("Removed image for post with id", postId)
+			}
 
 			imageUrl = "../database/images/" + handler.Filename
 		}
 
 		// make new updatedPost object
 		updatedPost := models.Post{
-			Id: foundPost.Id,
+			Id:        foundPost.Id,
 			Title:     title,
 			Content:   content,
 			CreatedAt: foundPost.CreatedAt,
