@@ -22,10 +22,10 @@ func SavePost(post models.Post) models.Post {
 func UpdatePost(post models.Post) models.Post {
 	savedUpdatedPost, err := repository.UpdatePost(post)
 	if err != nil {
-		fmt.Println("Error saving post to database. " + err.Error())
+		fmt.Println("Error updating post in database. " + err.Error())
 		return models.Post{}
 	} else {
-		fmt.Println("Saved post to database")
+		fmt.Println("Updated post in database")
 		return formatPosts(savedUpdatedPost)[0]
 	}
 }
@@ -39,6 +39,12 @@ func DeletePostById(postId int) error {
 		return err
 	} else {
 		fmt.Println("Removed from database post with id ", postId)
+	}
+
+	// delete the likes/dislikes of that post's comments
+	foundComments := GetAllCommentsByPostId(postId)
+	for _, comment := range foundComments {
+		repository.DeleteLikesByCommentId(comment.Id)
 	}
 
 	// delete comments of that post

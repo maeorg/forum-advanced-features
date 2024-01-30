@@ -82,3 +82,11 @@ func DeleteLikesByPostId(postId int) (sql.Result, error) {
 	}
 	return result, nil
 }
+
+func DeleteLikesByCommentId(commentId int) (sql.Result, error) {
+	result, err := Database.Exec(`DELETE FROM likes WHERE comment_id = ?`, commentId)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}
