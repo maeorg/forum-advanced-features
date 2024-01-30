@@ -72,5 +72,8 @@ func DeleteCommentById(commentId int) error {
 	} else {
 		fmt.Println("Removed from database comment with id ", commentId)
 	}
+
+	repository.DeleteLikesByCommentId(commentId)
+
 	return nil
 }
