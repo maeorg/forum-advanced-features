@@ -77,3 +77,14 @@ func DeleteCommentById(commentId int) error {
 
 	return nil
 }
+
+func UpdateComment(comment models.Comment) models.Comment {
+	savedUpdatedComment, err := repository.UpdateComment(comment)
+	if err != nil {
+		fmt.Println("Error updating comment in database. " + err.Error())
+		return models.Comment{}
+	} else {
+		fmt.Println("Updated comment in database")
+		return formatComments(savedUpdatedComment)[0]
+	}
+}

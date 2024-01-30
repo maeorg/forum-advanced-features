@@ -121,7 +121,7 @@
             {{ if eq $username .Author.Username }}
             <div id="outer">
                 <div class="inner">
-                    <form method="post" action="/editComment/{{ .Comment.Id }}">
+                    <form method="get" action="/editComment/{{ .Comment.Id }}">
                         <input class="button-3 button-5-color" type="submit" value="Edit comment">
                     </form>
                 </div>
