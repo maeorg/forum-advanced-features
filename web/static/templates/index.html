@@ -35,7 +35,7 @@
         <form action="/filter" method="POST">
             <div class="postContent" style="text-align: center;">Filter posts:
                 <select name="filter" id="filter">
-                    <option value="0">All</option>
+                    <option value="0">All categories</option>
                     {{ range .Categories }}
                     <option value="{{ .Id }}">{{ .Name }}</option>
                     {{ end }}
@@ -65,8 +65,8 @@
 
                 Categories: <br>
                 {{ range .Categories }}
-                <input type="checkbox" id="category" name="category" value="{{ .Id }}">
-                <label for="category">{{ .Name }} </label>
+                <input type="checkbox" id="{{ .Id }}" name="category" value="{{ .Id }}">
+                <label for="{{ .Id }}">{{ .Name }} </label>
                 {{ end }}<br><br>
 
                 Add image: <input class="submit" type="file" name="img" accept="image/*" /><br><br>
@@ -118,7 +118,7 @@
             {{ if eq $username .Author.Username }}
             <div id="outer">
                 <div class="inner">
-                    <form method="post" action="/editPost/{{ .Post.Id }}">
+                    <form method="get" action="/editPost/{{ .Post.Id }}">
                         <input class="button-3 button-5-color" type="submit" value="Edit post">
                     </form>
                 </div>

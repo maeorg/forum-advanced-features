@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fireside Forum</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+
+<body class="backgroundImage">
+
+    <div class="title"><a href="/" style="color: white;">🔥 FIRESIDE FORUM 🔥</a></div>
+
+    <div style="margin-right: 30px; text-align: right;">
+        {{ if .User.Username }}
+        <div class="postContent courierFont">
+            Logged in as: {{ .User.Username }}
+        </div>
+        <a class="menuItem" href="/">HOME</a>
+        <a class="menuItem" href="/activity">ACTIVITY</a>
+        <a class="menuItem" href="/notifications">NOTIFICATIONS ({{ .NumberOfNewNotifications }}) </a>
+        <a class="menuItem" href="/logout">LOG OUT</a>
+        {{ else }}
+        <a href="/login"
+            style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">LOG
+            IN</a>
+        <a href="/signup"
+            style="color: white; font-size: 18px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; margin-left: 30px;">SIGN
+            UP</a>
+        {{ end }}
+    </div>
+
+    {{ if eq .Post.UserId .User.Id }}
+    <div class="post-block">
+        <form method="post" action="/editPost/{{ .Post.Id }}" enctype="multipart/form-data">
+            <div class="newPostTitle">EDIT POST </div>
+            <div class="newPostContent">
+                Title:<br>
+                <textarea type="text" name="title" pattern=".*\S+.*" maxlength="200" required rows="1"
+                    cols="100">{{ .Post.Title }}</textarea><br><br>
+
+                Content:<br>
+                <textarea type="text" name="content" pattern=".*\S+.*" maxlength="500" required rows="4"
+                    cols="100">{{ .Post.Content }}</textarea><br><br>
+
+                Categories: <br>
+                {{ $chosenCategories := .ChosenCategories }}
+                {{ range .AllCategories }}
+                    {{ $allCategoriesId := .Id }}
+                    {{ $isChecked := false }}
+                    {{ range $chosenCategories }}
+                        {{ $chosenCategoriesId := .Id }}
+                        {{ if eq $allCategoriesId $chosenCategoriesId }}
+                            {{ $isChecked = true }}
+                            {{ break }}
+                        {{ end }}
+                    {{ end }}
+                    <input type="checkbox" id="{{ .Id }}" name="category" value="{{ .Id }}"{{ if $isChecked }}checked{{ end }}>
+                    <label for="{{ .Id }}">{{ .Name }} </label>
+                {{ end }}<br><br>
+
+                {{ if .Post.ImageUrl }}
+                Original image:<br>
+                <img class="postImage" src="{{.Post.ImageUrl}}" alt=""><br><br>
+                {{ end }}
+
+                Choose new image: <input class="submit" type="file" name="img" accept="image/*" /><br><br>
+
+                <div id="outer">
+                    <div class="inner">
+                        <input class="button-3 button-4-color" type="submit" value="Save post">
+                    </div>
+                    <div class="inner">
+                        <a href="/" class="button-3 button-4-color">Discard changes</a>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    {{ else }}
+    <div class="postContent courierFont">
+        Warning. This is not your post or you are not logged in. You are not allowed to edit it.
+    </div>
+    {{ end }}
+
+</body>
+
+</html>

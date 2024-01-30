@@ -65,7 +65,7 @@
             {{ if eq $username .PostAndLikes.Author.Username }}
             <div id="outer">
                 <div class="inner">
-                    <form method="post" action="/editPost/{{ .PostAndLikes.Post.Id }}">
+                    <form method="get" action="/editPost/{{ .PostAndLikes.Post.Id }}">
                         <input class="button-3 button-5-color" type="submit" value="Edit post">
                 </div>
                 </form>
