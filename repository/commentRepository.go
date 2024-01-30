@@ -53,3 +53,13 @@ func DeleteCommentById(commentId int) (sql.Result, error) {
 	}
 	return result, nil
 }
+
+func UpdateComment(comment models.Comment) (*sql.Rows, error) {
+	query := `UPDATE comments SET content = ? WHERE id = ?`
+	_, err := Database.Exec(query, comment.Content, comment.Id)
+	if err != nil {
+		return nil, err
+	}
+	savedUpdatedComment, _ := Database.Query("SELECT * FROM comments WHERE id = ?", comment.Id)
+	return savedUpdatedComment, nil
+}

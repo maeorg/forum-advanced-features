@@ -19,7 +19,7 @@ func Handler() {
 	http.HandleFunc("/likePost/", Like)
 	http.HandleFunc("/dislikePost/", Dislike)
 	http.HandleFunc("/addComment/", AddComment)
-	// http.HandleFunc("/editComment/", EditComment)
+	http.HandleFunc("/editComment/", LoadEditCommentPage)
 	http.HandleFunc("/deleteComment/", DeleteComment)
 	http.HandleFunc("/likeComment/", Like)
 	http.HandleFunc("/dislikeComment/", Dislike)
