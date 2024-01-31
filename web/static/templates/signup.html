@@ -22,7 +22,7 @@
                     autocomplete="off" maxlength="32" required><br><br>
 
                 <label class="signupLabels" for="email">E-mail</label>
-                <input class="signupInputfield" type="email" name="email" placeholder="Email" pattern=".*\S+.*"
+                <input class="signupInputfield" type="email" name="email" placeholder="Email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
                     autocomplete="off" maxlength="64" required><br><br>
 
                 <label class="signupLabels" for="password">Password</label>
@@ -35,7 +35,7 @@
                     placeholder="Confirm password" required><br><br>
 
                 <input class="button-3" type="submit" value="Create account">
-            </form>
+            </form>           
             <br><br>
             Already have an account? Log in:<br><br>
             <a class="button-3 button-4-color" href="/login">Log in</a>
