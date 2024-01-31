@@ -108,7 +108,7 @@ func ProcessLike(oppositeLike models.Like, likeType string, userId, postId, comm
 	}
 
 	REDIRECT:
-	isOnPostsPage := strings.HasPrefix(strings.TrimPrefix(r.Referer(), "http://localhost:8080"), "/posts/")
+	isOnPostsPage := strings.HasPrefix(r.Referer(), "https://"+r.Host+"/posts/") || strings.HasPrefix(r.Referer(), "http://"+r.Host+"/posts/")
 	if commentId != 0 {
 		foundComment := services.GetCommentById(commentId)
 		http.Redirect(w, r, "/posts/"+strconv.Itoa(foundComment.PostId), http.StatusSeeOther)
