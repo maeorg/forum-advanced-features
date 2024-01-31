@@ -92,7 +92,7 @@ func ProcessLike(oppositeLike models.Like, likeType string, userId, postId, comm
 			AddNotification(likeType, postId, postCreatorUserId, userId)
 		}
 		fmt.Println("Post/comment is already liked/disliked by the same user. Reversing likes")
-		goto COMMENT
+		goto REDIRECT
 	}
 
 	// check if like already exists
@@ -107,10 +107,13 @@ func ProcessLike(oppositeLike models.Like, likeType string, userId, postId, comm
 		services.RemoveLike(foundLike)
 	}
 
-COMMENT:
+	REDIRECT:
+	isOnPostsPage := strings.HasPrefix(strings.TrimPrefix(r.Referer(), "http://localhost:8080"), "/posts/")
 	if commentId != 0 {
 		foundComment := services.GetCommentById(commentId)
 		http.Redirect(w, r, "/posts/"+strconv.Itoa(foundComment.PostId), http.StatusSeeOther)
+	} else if isOnPostsPage {
+		http.Redirect(w, r, "/posts/"+strconv.Itoa(postId), http.StatusSeeOther)
 	} else {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
