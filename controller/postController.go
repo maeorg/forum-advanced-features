@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gofrs/uuid/v5"
 )
 
 func AddPost(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +45,10 @@ func AddPost(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			f, err := os.Create("./database/images/" + handler.Filename)
+			generatedUuid, _ := uuid.NewV4()
+			fileUuid := generatedUuid.String()
+			filename := fileUuid + handler.Filename
+			f, err := os.Create("./database/images/" + filename)
 			if err != nil {
 				http.Error(w, "Cannot post image", http.StatusBadRequest)
 				return
@@ -51,7 +56,7 @@ func AddPost(w http.ResponseWriter, r *http.Request) {
 			defer f.Close()
 			io.Copy(f, file)
 
-			imageURL = "../database/images/" + handler.Filename
+			imageURL = "../database/images/" + filename
 		}
 
 		// make new post object
